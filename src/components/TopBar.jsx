@@ -155,8 +155,8 @@ export default function TopBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{backgroundColor:"#343499"}}>
-        <Toolbar>
+      <AppBar position="static" sx={{backgroundColor:"#343499", padding : "25px 0"}}>
+        <Toolbar sx={{justifyContent:"space-between"}}>
           <IconButton
             size="large"
             edge="start"
@@ -172,18 +172,20 @@ export default function TopBar() {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            NFT-Viewer
+            NFT-VIEWER
           </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Wallet…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
-          <Box sx={{ flexGrow: 1 }} />
+          <Box sx={{ flexGrow: 1 }}>
+            <Search>
+                <SearchIconWrapper>
+                <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                    placeholder="Wallet…"
+                    inputProps={{ 'aria-label': 'search' }}
+                    sx={{ width: '100%' }}
+                />
+            </Search>
+          </Box>
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
