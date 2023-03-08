@@ -61,7 +61,7 @@ export default function NFTDetailModal({open, handleClose, data}) {
   };
 
   function handleOnClose(){
-    handleExpandClick();
+    setExpanded(false);
     handleClose();
   }
 
