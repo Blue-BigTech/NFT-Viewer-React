@@ -10,7 +10,7 @@ import TmpData from "../data/tmpdata.json";
 
 export default function (){
   return(
-    <Box sx={{marginTop:"114px", marginBottom:"50px"}}>
+    <Box sx={{margin:"114px 0 50px 0", padding : "0 10px"}}>
       <Container fixed sx={{padding : "50px 0"}}>
         <Grid container spacing={3}>
           {

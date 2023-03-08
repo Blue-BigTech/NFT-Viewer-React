@@ -30,20 +30,20 @@ export default function NFTCard({data}) {
   
   return (
     <React.Fragment>
-      <Card sx={{ maxWidth: 350 }}>
+      <Card sx={{ maxWidth: 550 }}>
         <CardActionArea onClick={handleOpen}>
           <CardMedia
             className="img-zoom"
             component="img"
-            height="140"
+            height="250"
             image={img}
             alt="green iguana"
           />
-          <CardContent>
+          <CardContent sx={{backgroundColor: "#000", color:"white"}}>
             <Typography gutterBottom variant="h5" component="div">
               {title}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" color="white">
               {subtitle}
             </Typography>
           </CardContent>
