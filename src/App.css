@@ -48,3 +48,16 @@
   filter: brightness(100%);
   transform: scale(1.2);
 }
+
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #474752;
+}
+::-webkit-scrollbar-thumb {
+  height: 90px;
+  background: #343499;
+  border-radius: 1px;
+}
