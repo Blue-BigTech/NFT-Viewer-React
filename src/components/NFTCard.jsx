@@ -6,6 +6,18 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import NFTDetailModal from './NFTDetailModal';
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: '#00000000',
+  border: '2px solid #00000000',
+  boxShadow: 24,
+  p: 4,
+};
+
 export default function NFTCard({data}) {
   const {
     title,
@@ -21,6 +33,7 @@ export default function NFTCard({data}) {
       <Card sx={{ maxWidth: 350 }}>
         <CardActionArea onClick={handleOpen}>
           <CardMedia
+            className="img-zoom"
             component="img"
             height="140"
             image={img}

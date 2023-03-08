@@ -18,7 +18,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -59,6 +59,10 @@ export default function NFTDetailModal({open, handleClose, data}) {
     handleExpandClick();
     handleClose();
   }
+
+  function buy(){
+
+  }
   return (
     <React.Fragment>
       <Modal
@@ -95,11 +99,8 @@ export default function NFTDetailModal({open, handleClose, data}) {
               </Typography>
             </CardContent>
             <CardActions disableSpacing>
-              <IconButton aria-label="add to favorites">
-                <FavoriteIcon />
-              </IconButton>
-              <IconButton aria-label="share">
-                <ShareIcon />
+              <IconButton aria-label="Buy" onClick={buy}>
+                <ShoppingCartIcon />
               </IconButton>
               <ExpandMore
                 expand={expanded}

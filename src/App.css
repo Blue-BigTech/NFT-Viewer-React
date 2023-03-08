@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.img-zoom {
+  transform-origin: 50% 65%;
+  transition: transform 2s, filter 1s ease-in-out;
+  filter: brightness(130%);
+}
+
+/* The Transformation */
+.img-zoom:hover {
+  filter: brightness(100%);
+  transform: scale(1.2);
+}
