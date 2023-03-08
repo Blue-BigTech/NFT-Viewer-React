@@ -42,23 +42,33 @@ const style = {
   p: 4,
 };
 
-export default function NFTDetailModal({open, handleClose, nft}) {
+export default function NFTDetailModal({open, handleClose, data}) {
+  const {
+    title,
+    subtitle,
+    detail,
+    more,
+    img,
+  } = data;
   const [expanded, setExpanded] = React.useState(false);
-
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
+  function handleOnClose(){
+    handleExpandClick();
+    handleClose();
+  }
   return (
     <React.Fragment>
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={handleOnClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Card sx={{ maxWidth: 345 }}>
+          <Card sx={{ maxWidth: 400 }}>
             <CardHeader
               avatar={
                 <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -70,20 +80,18 @@ export default function NFTDetailModal({open, handleClose, nft}) {
                   <MoreVertIcon />
                 </IconButton>
               }
-              title="Shrimp and Chorizo Paella"
-              subheader="September 14, 2016"
+              title={title}
+              subheader={subtitle}
             />
             <CardMedia
               component="img"
-              height="194"
-              image="/static/images/cards/paella.jpg"
+              height="250"
+              image={img}
               alt="Paella dish"
             />
             <CardContent>
               <Typography variant="body2" color="text.secondary">
-                This impressive paella is a perfect party dish and a fun meal to cook
-                together with your guests. Add 1 cup of frozen peas along with the mussels,
-                if you like.
+                {detail}
               </Typography>
             </CardContent>
             <CardActions disableSpacing>
@@ -104,10 +112,9 @@ export default function NFTDetailModal({open, handleClose, nft}) {
             </CardActions>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <CardContent>
-                <Typography paragraph>Method:</Typography>
-                <Typography paragraph>
-                  Heat 1/2 cup of the broth in a pot until simmering, add saffron and set
-                  aside for 10 minutes.
+                <Typography paragraph>More:</Typography>
+                <Typography style={{wordWrap: "break-word"}}>
+                  {more}
                 </Typography>
               </CardContent>
             </Collapse>

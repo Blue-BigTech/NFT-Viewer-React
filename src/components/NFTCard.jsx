@@ -6,33 +6,37 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import NFTDetailModal from './NFTDetailModal';
 
-export default function NFTCard() {
+export default function NFTCard({data}) {
+  const {
+    title,
+    subtitle,
+    img
+  } = data;
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   
   return (
     <React.Fragment>
-      <Card sx={{ maxWidth: 345 }}>
+      <Card sx={{ maxWidth: 350 }}>
         <CardActionArea onClick={handleOpen}>
           <CardMedia
             component="img"
             height="140"
-            image="/static/images/cards/contemplative-reptile.jpg"
+            image={img}
             alt="green iguana"
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
-              Lizard
+              {title}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Lizards are a widespread group of squamate reptiles, with over 6,000
-              species, ranging across all continents except Antarctica
+              {subtitle}
             </Typography>
           </CardContent>
         </CardActionArea>
       </Card>
-      <NFTDetailModal open={open} handleClose={handleClose} />
+      <NFTDetailModal open={open} handleClose={handleClose} data={data}/>
     </React.Fragment>
   );
 }

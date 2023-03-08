@@ -155,7 +155,7 @@ export default function TopBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{backgroundColor:"#343499", padding : "25px 0"}}>
+      <AppBar position="fixed" sx={{backgroundColor:"#343499", padding : "25px 0"}}>
         <Toolbar sx={{justifyContent:"space-between"}}>
           <IconButton
             size="large"
