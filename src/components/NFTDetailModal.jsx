@@ -42,6 +42,11 @@ const style = {
   p: 4,
 };
 
+const blackstyle = {
+  backgroundColor : "#000",
+  color : "white",
+};
+
 export default function NFTDetailModal({open, handleClose, data}) {
   const {
     title,
@@ -61,7 +66,7 @@ export default function NFTDetailModal({open, handleClose, data}) {
   }
 
   function buy(){
-
+    console.log("buy**************");
   }
   return (
     <React.Fragment>
@@ -74,6 +79,7 @@ export default function NFTDetailModal({open, handleClose, data}) {
         <Box sx={style}>
           <Card sx={{ maxWidth: 400 }}>
             <CardHeader
+              sx={blackstyle}
               avatar={
                 <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
                   R
@@ -85,7 +91,7 @@ export default function NFTDetailModal({open, handleClose, data}) {
                 </IconButton>
               }
               title={title}
-              subheader={subtitle}
+              subheader=<Typography color={'white'}>{subtitle}</Typography>
             />
             <CardMedia
               component="img"
@@ -93,13 +99,13 @@ export default function NFTDetailModal({open, handleClose, data}) {
               image={img}
               alt="Paella dish"
             />
-            <CardContent>
-              <Typography variant="body2" color="text.secondary">
+            <CardContent sx={blackstyle}>
+              <Typography variant="body2" color="white">
                 {detail}
               </Typography>
             </CardContent>
-            <CardActions disableSpacing>
-              <IconButton aria-label="Buy" onClick={buy}>
+            <CardActions disableSpacing sx={blackstyle}>
+              <IconButton aria-label="Buy" onClick={buy} sx={{color:"white"}}>
                 <ShoppingCartIcon />
               </IconButton>
               <ExpandMore
@@ -108,13 +114,13 @@ export default function NFTDetailModal({open, handleClose, data}) {
                 aria-expanded={expanded}
                 aria-label="show more"
               >
-                <ExpandMoreIcon />
+                <ExpandMoreIcon  sx={{color:"white"}}/>
               </ExpandMore>
             </CardActions>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
-              <CardContent>
+              <CardContent sx={blackstyle}>
                 <Typography paragraph>More:</Typography>
-                <Typography style={{wordWrap: "break-word"}}>
+                <Typography style={{wordWrap: "break-word", color : "white"}}>
                   {more}
                 </Typography>
               </CardContent>
