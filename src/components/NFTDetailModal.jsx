@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 
 import { styled } from '@mui/material/styles';
+import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
@@ -13,9 +13,6 @@ import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -48,13 +45,6 @@ const blackstyle = {
 };
 
 export default function NFTDetailModal({open, handleClose, data}) {
-  const {
-    title,
-    subtitle,
-    detail,
-    more,
-    img,
-  } = data;
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -65,9 +55,6 @@ export default function NFTDetailModal({open, handleClose, data}) {
     handleClose();
   }
 
-  function buy(){
-    console.log("buy**************");
-  }
   return (
     <React.Fragment>
       <Modal
@@ -80,34 +67,37 @@ export default function NFTDetailModal({open, handleClose, data}) {
           <Card sx={{ maxWidth: 400 }}>
             <CardHeader
               sx={blackstyle}
-              avatar={
-                <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                  R
-                </Avatar>
+              avatar = { data.contract && data.contract.openSea && data.contract.openSea.imageUrl &&
+                (
+                  <Link href={`${data.contract.openSea.externalUrl}`} target="_blank">
+                    <Avatar alt={data.contract.openSea.collectionName} src={data.contract.openSea.imageUrl} aria-label="recipe" />
+                  </Link>
+                )
               }
               action={
                 <IconButton aria-label="settings">
                   <MoreVertIcon />
                 </IconButton>
               }
-              title={title}
-              subheader=<Typography color={'white'}>{subtitle}</Typography>
+              title={data.contract && data.contract.openSea && data.contract.openSea.collectionName && data.contract.openSea.collectionName}
             />
             <CardMedia
               component="img"
               height="250"
-              image={img}
-              alt="Paella dish"
+              image={data.media[0].gateway && data.media[0].gateway}
+              alt={data.title && data.title}
             />
             <CardContent sx={blackstyle}>
               <Typography variant="body2" color="white">
-                {detail}
+                {data.rawMetadata.description}
               </Typography>
             </CardContent>
             <CardActions disableSpacing sx={blackstyle}>
-              <IconButton aria-label="Buy" onClick={buy} sx={{color:"white"}}>
-                <ShoppingCartIcon />
-              </IconButton>
+              <Link href={`https://opensea.io/assets/ethereum/${data.contract.address}/${data.tokenId}`} target="_blank">
+                <IconButton aria-label="Buy" sx={{color:"white"}}>
+                  <ShoppingCartIcon />
+                </IconButton>
+              </Link>
               <ExpandMore
                 expand={expanded}
                 onClick={handleExpandClick}
@@ -119,10 +109,64 @@ export default function NFTDetailModal({open, handleClose, data}) {
             </CardActions>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <CardContent sx={blackstyle}>
-                <Typography paragraph>More:</Typography>
-                <Typography style={{wordWrap: "break-word", color : "white"}}>
-                  {more}
-                </Typography>
+                {data.tokenType &&
+                  (
+                    <Box style={{ display: "flex", justifyContent: "space-between" }}>
+                      <Box>TokenType:</Box>
+                      <Box>{data.contract.tokenType}</Box>
+                    </Box>
+                  )
+                }
+                {data.title &&
+                  (
+                    <Box style={{ display: "flex", justifyContent: "space-between" }}>
+                      <Box>Title:</Box>
+                      <Box>{data.title}</Box>
+                    </Box>
+                  )
+                }
+                {data.tokenId &&
+                  (
+                    <Box style={{ display: "flex", justifyContent: "space-between" }}>
+                      <Box>TokenId:</Box>
+                      <Box>{data.tokenId}</Box>
+                    </Box>
+                  )
+                }
+                {data.contract && data.contract && data.contract.openSea && data.contract.openSea.floorPrice &&
+                  (
+                    <Box style={{ display: "flex", justifyContent: "space-between" }}>
+                      <Box>Price:</Box>
+                      <Box>
+                        { data.contract.openSea.floorPrice } ETH
+                      </Box>
+                    </Box>
+                  )
+                }
+                {data.contract && data.contract.address &&
+                  (
+                    <Box style={{ display: "flex", justifyContent: "space-between" }}>
+                      <Box>Contract:</Box>
+                      <Link href={`https://etherscan.io/address/${data.contract.address}`} target="_blank">
+                        {
+                          String(data.contract.address).substring(0, 6) +
+                          "..." +
+                          String(data.contract.address).substring(38)
+                        }
+                      </Link>
+                    </Box>
+                  )
+                }
+                {data.contract && data.contract && data.contract.openSea && data.contract.openSea.externalUrl &&
+                  (
+                    <Box style={{ display: "flex", justifyContent: "space-between" }}>
+                      <Box>Site:</Box>
+                      <Link href={`${data.contract.openSea.externalUrl}`} target="_blank">
+                        { data.contract.openSea.externalUrl }
+                      </Link>
+                    </Box>
+                  )
+                }
               </CardContent>
             </Collapse>
           </Card>

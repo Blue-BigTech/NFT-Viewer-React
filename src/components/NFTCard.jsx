@@ -6,24 +6,7 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import NFTDetailModal from './NFTDetailModal';
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: '#00000000',
-  border: '2px solid #00000000',
-  boxShadow: 24,
-  p: 4,
-};
-
-export default function NFTCard({data}) {
-  const {
-    title,
-    subtitle,
-    img
-  } = data;
+export default function NFTCard({ data }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -36,15 +19,12 @@ export default function NFTCard({data}) {
             className="img-zoom"
             component="img"
             height="250"
-            image={img}
-            alt="green iguana"
+            image={data.media[0].gateway && data.media[0].gateway}
+            alt={data.title && data.title}
           />
-          <CardContent sx={{backgroundColor: "#000", color:"white"}}>
+          <CardContent sx={{ display:"flex", backgroundColor: "#000", color:"white", height: "120px;", justifyContent: "center", alignItems: "center" }}>
             <Typography gutterBottom variant="h5" component="div">
-              {title}
-            </Typography>
-            <Typography variant="body2" color="white">
-              {subtitle}
+              {data.title ? data.title : ""}
             </Typography>
           </CardContent>
         </CardActionArea>

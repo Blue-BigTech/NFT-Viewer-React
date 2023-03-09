@@ -61,3 +61,7 @@
   background: #343499;
   border-radius: 1px;
 }
+
+input {
+  width : 100% !important
+}

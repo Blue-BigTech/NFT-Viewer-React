@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -14,6 +15,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import { SnackbarProvider, useSnackbar } from 'notistack';
+import { useAppContext } from "../contexts/AppContext";
+import { Network, Alchemy } from "alchemy-sdk";
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -55,12 +59,31 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function TopBar() {
+const TopBar = () =>{
+  const { enqueueSnackbar } = useSnackbar();
+  const context = useAppContext();
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  useEffect(()=>{
+    const init = async () => {
+      if (context.alchemy === null) {
+        const settings = {
+          apiKey: "-xM9wJCH7uFGZn2SaDZsa3tXmlfQkjIY",
+          network: Network.ETH_MAINNET,
+        };
+    
+        const alchemy = new Alchemy(settings);
+  
+        context.setAlchemy(alchemy)
+      }
+    }
+    init()
+  })
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -73,10 +96,6 @@ export default function TopBar() {
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
   };
 
   const menuId = 'primary-search-account-menu';
@@ -153,43 +172,90 @@ export default function TopBar() {
     </Menu>
   );
 
+  const handleKeyPress = async (e) => {
+    if (e.key !== 'Enter') return;
+
+    try {
+      const walletAddress = e.target.value
+      const nftsForOwner = await context.alchemy.nft.getNftsForOwner(walletAddress);
+      console.log('nftsForOwner', nftsForOwner)
+  
+      if (nftsForOwner.totalCount > 0) {
+        enqueueSnackbar(`${nftsForOwner.totalCount} NFTs founded`, {
+          variant: 'success',
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'right'
+          }
+        });
+        
+        context.setNfts(nftsForOwner.ownedNfts)
+      }
+    } catch (e) {
+      enqueueSnackbar('Invalid Address', {
+        variant: 'warning',
+        anchorOrigin: {
+          vertical: 'top',
+          horizontal: 'right'
+        }
+      });
+    }
+  }
+
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" sx={{backgroundColor:"#343499", padding : "25px 0"}}>
-        <Toolbar sx={{justifyContent:"space-between"}}>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
-            NFT-VIEWER
-          </Typography>
-          <Box sx={{ flexGrow: 1 }}>
-            <Search>
+    <>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="fixed" sx={{backgroundColor:"#343499", padding : "25px 0"}}>
+          <Toolbar sx={{justifyContent:"space-between"}}>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              sx={{ mr: 2 }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ display: { xs: 'none', sm: 'block' } }}
+            >
+              NFT-VIEWER
+            </Typography>
+            <Box sx={{ flexGrow: 1 }}>
+              <Search>
                 <SearchIconWrapper>
                 <SearchIcon />
                 </SearchIconWrapper>
                 <StyledInputBase
-                    placeholder="Wallet…"
-                    inputProps={{ 'aria-label': 'search' }}
-                    sx={{ width: '100%' }}
+                  placeholder="Wallet…"
+                  inputProps={{ 'aria-label': 'search' }}
+                  sx={{ width: '100%' }}
+                  onKeyPress={(e) => handleKeyPress(e)}
                 />
-            </Search>
-          </Box>
-        </Toolbar>
-      </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
-    </Box>
+              </Search>
+            </Box>
+          </Toolbar>
+        </AppBar>
+        {renderMobileMenu}
+        {renderMenu}
+      </Box>
+    </>
+  );
+}
+
+export default function IntegrationNotistack() {
+  return (
+    <SnackbarProvider
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      maxSnack={3}
+    >
+      <TopBar />
+    </SnackbarProvider>
   );
 }
